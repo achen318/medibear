@@ -1,12 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { SignInButton, UserButton } from "@clerk/clerk-react";
 import {
   Authenticated,
   Unauthenticated,
   useMutation,
-  useQuery,
-} from "convex/react";
-import { api } from "../convex/_generated/api";
+  useQuery
+} from 'convex/react';
+import { SignInButton, UserButton } from '@clerk/clerk-react';
+
+import { Button } from '@/components/ui/button';
+import { api } from '../convex/_generated/api';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       </h1>
       <Authenticated>
         <SignedIn />
+        <h1>Yay!!!</h1>
       </Authenticated>
       <Unauthenticated>
         <div className="flex justify-center">
@@ -31,7 +33,7 @@ export default function App() {
 function SignedIn() {
   const { numbers, viewer } =
     useQuery(api.myFunctions.listNumbers, {
-      count: 10,
+      count: 10
     }) ?? {};
   const addNumber = useMutation(api.myFunctions.addNumber);
 
@@ -56,27 +58,27 @@ function SignedIn() {
         </Button>
       </p>
       <p>
-        Numbers:{" "}
+        Numbers:{' '}
         {numbers?.length === 0
-          ? "Click the button!"
-          : numbers?.join(", ") ?? "..."}
+          ? 'Click the button!'
+          : numbers?.join(', ') ?? '...'}
       </p>
       <p>
-        Edit{" "}
+        Edit{' '}
         <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
           convex/myFunctions.ts
-        </code>{" "}
+        </code>{' '}
         to change your backend
       </p>
       <p>
-        Edit{" "}
+        Edit{' '}
         <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
           src/App.tsx
-        </code>{" "}
+        </code>{' '}
         to change your frontend
       </p>
       <p>
-        Check out{" "}
+        Check out{' '}
         <a
           className="font-medium text-primary underline underline-offset-4"
           target="_blank"
