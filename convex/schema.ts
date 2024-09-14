@@ -1,30 +1,38 @@
-// NOTE: You can remove this file. Declaring the shape
-// of the database is entirely optional in Convex.
-// See https://docs.convex.dev/database/schemas.
+import { defineSchema, defineTable } from 'convex/server';
 
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { v } from 'convex/values';
 
 export default defineSchema(
   {
-    documents: defineTable({
-      fieldOne: v.string(),
-      fieldTwo: v.object({
-        subFieldOne: v.array(v.number()),
-      }),
+    user: defineTable({
+      name: v.string(),
+      email: v.string(),
+      username: v.string(),
+      password: v.string()
     }),
-    // This definition matches the example query and mutation code:
-    numbers: defineTable({
-      value: v.number(),
+    consult: defineTable({
+      patient: v.id('patient'),
+      message: v.array(v.id('message')),
+      resolved: v.boolean(),
+      title: v.string()
     }),
+    message: defineTable({
+      author: v.string(),
+      images: v.array(v.string()),
+      text: v.string()
+    }),
+    patient: defineTable({
+      allergies: v.optional(v.array(v.string())),
+      blood_type: v.optional(v.string()),
+      conditions: v.optional(v.array(v.string())),
+      consults: v.array(v.id('consult')),
+      sex: v.optional(v.string())
+    }),
+    doctor: defineTable({
+      title: v.string(),
+      specialty: v.optional(v.string()),
+      consults: v.array(v.id('consult'))
+    })
   },
-  // If you ever get an error about schema mismatch
-  // between your data and your schema, and you cannot
-  // change the schema to match the current data in your database,
-  // you can:
-  //  1. Use the dashboard to delete tables or individual documents
-  //     that are causing the error.
-  //  2. Change this option to `false` and make changes to the data
-  //     freely, ignoring the schema. Don't forget to change back to `true`!
   { schemaValidation: true }
 );
