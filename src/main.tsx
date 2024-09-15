@@ -22,7 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<App />} />
-              <Route path="/Consult/:slug" element={<Consult />} />
+              <Route path="/consult/:slug" element={<Consult />} />
             </Routes>
             {/* <App />
             <Route path="/about" element={<Consult />} /> */}

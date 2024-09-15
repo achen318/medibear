@@ -8,6 +8,14 @@ import Post from "./components/post";
 import Consult from "./components/Consult";
 
 export default function App() {
+  // Define the state for the checkbox (checked or not)
+  const [isChecked, setIsChecked] = useState(false);
+
+  // Handle the checkbox change
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(event.target.checked); // Update the state with the checkbox value (true or false)
+  };
+  
   return (
     <main className=""> {/*container max-w-2xl flex flex-col gap-8 */} 
       {/* <h1 className="text-4xl font-extrabold my-8 text-center">
@@ -17,13 +25,28 @@ export default function App() {
         <h1>Yay!!!</h1>
       </Authenticated>
       <Unauthenticated>
-        <SignedIn /> {/* make sure to remove this line */}
-        <div className="flex justify-center">
-          <SignInButton mode="modal">
-            <Button>Sign in</Button>
-          </SignInButton>
-          <br/>
-          <h1>Loser !!!</h1>
+        <SignedIn /> 
+        {/* make sure to remove this line */}
+        <div className="flex justify-center items-start h-[90vh]">
+          <div className="font-extrabold my-8 flex flex-col items-center space-y-6">
+            <div>
+              <SignInButton mode="modal">
+                <Button className="px-8 py-4 text-lg">Sign in</Button>
+              </SignInButton>
+            </div>
+            
+            {/* <div>
+              <label className="flex items-center space-x-4">
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                  className="form-checkbox h-6 w-6 text-violet-600"
+                />
+                <span className="text-gray-700 text-lg">Doctor?</span>
+              </label>
+            </div> */}
+          </div>
         </div>
       </Unauthenticated>
     </main>
@@ -31,6 +54,8 @@ export default function App() {
 }
 
 function SignedIn() {
+  // get all posts blah blah blah
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -55,13 +80,14 @@ function SignedIn() {
   // const addNumber = useMutation(api.myFunctions.addNumber);
 
   return (
+    // {isChecked && ( 
     <>
       <header className="bg-gray-800 text-white">
       <nav className="container mx-auto py-4 flex justify-between items-center">
 
       {/* Hamburger Icon */}
-      <div>
-        {/* <button onClick={toggleDropdown} className="relative group">
+      {/*<div>
+         <button onClick={toggleDropdown} className="relative group">
           <div className="relative flex overflow-hidden items-center justify-center rounded-full w-[50px] h-[50px] transform transition-all bg-slate-700 ring-0 ring-gray-300 hover:ring-8 group-focus:ring-4 ring-opacity-30 duration-200 shadow-md">
             <div className="flex flex-col justify-between w-[20px] h-[20px] transform transition-all duration-300 origin-center overflow-hidden">
               <div className="bg-white h-[2px] w-7 transform transition-all duration-300 origin-left group-focus:translate-y-6 delay-100"></div>
@@ -76,7 +102,7 @@ function SignedIn() {
           </div>
         </button> */}
 
-          <button
+          {/* <button
             onClick={toggleDropdown}
             className="text-white focus:outline-none"
           >
@@ -103,6 +129,10 @@ function SignedIn() {
                 <li>Feedback</li>
               </ul>
       )}
+        </div> */}
+
+        <div className="flex space-x-4">
+          <a href="/services" className="hover:text-gray-400">All Posts</a>
         </div>
 
         {/* Search Bar */}
@@ -117,17 +147,12 @@ function SignedIn() {
             placeholder="Search..."
             className="w-full px-4 py-2 rounded-l-md bg-gray-700 text-white focus:outline-none"
           />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-gray-600 text-white hover:bg-gray-400 focus:outline-none"
-          >
-            Search
-          </button>
+
           <button
             type="submit"
             className="px-4 py-2 bg-gray-500 rounded-r-md text-white hover:bg-gray-400 focus:outline-none"
           >
-            Filter
+            Submit
           </button>
         </form>
         
@@ -141,10 +166,10 @@ function SignedIn() {
 
 
     <div className="container mx-auto py-8">
-      <Post subject="Hernia" patient="Eric Lin" date="11/11/2021" resolved={false} message="penis" />
-      <Post subject="Hep B" patient="Anthony Chen" date="11/1/2021" resolved={false} message="penis" />
-      <Post subject="Hernia" patient="Eric Lin" date="11/11/2021" resolved={false} message="penis" />
-      <Post subject="Hernia" patient="Eric Lin" date="11/11/2021" resolved={false} message="penis" />
+      <Post subject="Hernia" patient="Eric Lin" date="11/11/2021" resolved={false} message="penis" id = "1"/>
+      <Post subject="Hep B" patient="Anthony Chen" date="11/1/2021" resolved={false} message="penis" id = "1" />
+      <Post subject="Hernia" patient="Eric Lin" date="11/11/2021" resolved={false} message="penis" id = "1"/>
+      <Post subject="Hernia" patient="Eric Lin" date="11/11/2021" resolved={false} message="penis" id = "1"/>
       {/* <p>Welcome {viewer}!</p>
       <p className="flex gap-4 items-center">
         This is you:
@@ -195,5 +220,6 @@ function SignedIn() {
       </p> */}
     </div>
     </>
+    // )}
   );
 }

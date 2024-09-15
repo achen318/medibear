@@ -10,15 +10,16 @@ interface PostProps {
     date: string;
     message: string /*Message[];*/
     resolved: boolean;
+    id: string;
 }
 
-const Post: React.FC<PostProps> = ({subject, patient, date, resolved, message}) => {
+const Post: React.FC<PostProps> = ({subject, patient, date, resolved, message, id}) => {
 
     const navigate = useNavigate();
 
     const handleClick = () => {
-        const data = { subject: subject, patient: patient, date: date, resolved: resolved, message: message};
-        navigate('/Consult/' + patient, { state: data });
+        const data = { subject: subject, patient: patient, date: date, resolved: resolved, message: message, id: id};
+        navigate('/consult/' + id, { state: data });
     };
 
     return (
@@ -30,7 +31,7 @@ const Post: React.FC<PostProps> = ({subject, patient, date, resolved, message}) 
             <div className="text-white space-y-1">
                 <p className="text-sm font-medium">Patient: {patient}</p>
                 <p className="text-sm font-medium">Date: {date}</p>
-                <p className={`text-sm ${resolved ? 'text-green-400' : 'text-red-400'} font-medium`}>
+                <p className={`text-sm ${resolved ? 'text-green-500' : 'text-red-700'} font-medium`}>
                 Resolved: {resolved ? 'Yes' : 'No'}
                 </p>
             </div>
