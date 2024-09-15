@@ -82,9 +82,9 @@ export const reply = mutation({
 
 export const createPatient = mutation({
   args: {
-    allergies: v.optional(v.array(v.string())),
+    allergies: v.array(v.string()),
     blood_type: v.optional(v.string()),
-    conditions: v.optional(v.array(v.string())),
+    conditions: v.array(v.string()),
     consults: v.array(v.id('consult')),
     sex: v.optional(v.string())
   }, 

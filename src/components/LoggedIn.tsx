@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from 'convex/react';
 
-import { UserButton } from '@clerk/clerk-react';
 import { api } from '../../convex/_generated/api';
 
 export default function LoggedIn() {
@@ -8,12 +7,9 @@ export default function LoggedIn() {
   const createMessage = useMutation(api.myFunctions.createMessage);
   const createConsult = useMutation(api.myFunctions.createConsult);
   const createPatient = useMutation(api.myFunctions.createPatient);
-  
 
   return (
     <>
-      <UserButton />
-
       <h1>Hi</h1>
 
       <form
@@ -24,30 +20,29 @@ export default function LoggedIn() {
           const author = formData.get('author') as string;
           const image = formData.get('image') as string;
           const text = formData.get('text') as string;
-          const title = formData.get("title") as string;
+          const title = formData.get('title') as string;
 
           const newMessage = await createMessage({
-            author, 
+            author,
             images: [image],
-            text, 
-            replies: [],
+            text,
+            replies: []
           });
 
           const newPatient = await createPatient({
             allergies: [],
-            blood_type: "O",
+            blood_type: 'O',
             conditions: [],
             consults: [],
-            sex: 'F',
+            sex: 'F'
           });
 
           await createConsult({
             patient: newPatient._id,
-            body: newMessage._id, 
-            resolved: false, 
-            title: title,
+            body: newMessage._id,
+            resolved: false,
+            title: title
           });
-          
         }}
         style={{ color: 'lightgreen' }}
       >
