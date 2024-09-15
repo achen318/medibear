@@ -26,16 +26,17 @@ export default defineSchema(
     }),
 
     patient: defineTable({
-      allergies: v.optional(v.string()),
-      blood_type: v.optional(v.string()),
-      conditions: v.optional(v.string()),
-      consults: v.array(v.id('consult')),
-      sex: v.optional(v.string())
+      sex: v.string(),
+      blood_type: v.string(),
+      allergies: v.string(),
+      conditions: v.string(),
+      consults: v.array(v.id('consult'))
     }),
 
-    doctor: defineTable({
+    practitioner: defineTable({
       title: v.string(),
-      specialty: v.optional(v.string()),
+      specialty: v.string(),
+      npi: v.number(),
       consults: v.array(v.id('consult'))
     })
   },

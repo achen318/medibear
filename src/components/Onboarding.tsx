@@ -1,9 +1,60 @@
+import { api } from '../../convex/_generated/api';
+import { useMutation } from 'convex/react';
 import { useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 
 export default function Onboarding() {
   const { user } = useUser();
   const [selectedOption, setSelectedOption] = useState('');
+
+  const createPatient = useMutation(api.myFunctions.createPatient);
+  const createPractitioner = useMutation(api.myFunctions.createPractitioner);
+
+  const handlePatientSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const formData = new FormData(e.currentTarget);
+
+    const sex = formData.get('sex') as string;
+    const bloodType = formData.get('blood') as string;
+    const allergies = formData.get('allergies') as string;
+    const conditions = formData.get('conditions') as string;
+
+    await createPatient({
+      sex,
+      blood_type: bloodType,
+      allergies,
+      conditions,
+      consults: []
+    })
+      .then(() => {
+        user!.publicMetadata.onboarded = true;
+      })
+      .catch((error) => {
+        console.error('Failed to update user:', error);
+      });
+  };
+
+  const handlePractitionerSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    const formData = new FormData(e.currentTarget);
+
+    const title = formData.get('title') as string;
+    const specialty = formData.get('specialty') as string;
+    const npi = parseInt(formData.get('npi') as string, 10);
+
+    await createPractitioner({
+      title,
+      specialty,
+      npi,
+      consults: []
+    })
+      .then(() => {
+        user!.publicMetadata.onboarded = true;
+      })
+      .catch((error) => {
+        console.error('Failed to update user:', error);
+      });
+  };
 
   return (
     <div className="space-y-5">
@@ -25,80 +76,156 @@ export default function Onboarding() {
       </button>
 
       {selectedOption == 'patient' && (
-        <div>
-          <form>
-            <label htmlFor="sex">Sex</label>
-            <br />
-            <input type="text" id="sex" name="sex" />
-            <br />
-            <label htmlFor="blood">Blood Type</label>
-            <br />
-            <input type="text" id="blood" name="blood" />
-            <br />
-            <label htmlFor="allergies">Allergies</label>
-            <br />
-            <input type="text" id="allergies" name="allergies" />
-            <br />
-            <label htmlFor="conditions">Conditions</label>
-            <br />
-            <input type="text" id="conditions" name="conditions" />
-            <br />
-          </form>
-        </div>
-      )}
-      {selectedOption == 'practitioner' && (
-        <form className="max-w-sm mx-auto">
+        <form
+          className="max-w mx-auto"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handlePatientSubmit(e).catch((error) => {
+              console.error('Error during form submission:', error);
+            });
+          }}
+        >
           <div className="mb-5">
             <label
-              htmlFor="email"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="sex"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your email
+              Sex
             </label>
             <input
-              type="email"
-              id="email"
+              type="text"
+              id="sex"
+              name="sex"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="name@flowbite.com"
-              required
+              placeholder="Male"
             />
           </div>
+
           <div className="mb-5">
             <label
-              htmlFor="password"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="blood"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your password
+              Blood Type
             </label>
             <input
-              type="password"
-              id="password"
+              type="text"
+              id="blood"
+              name="blood"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
+              placeholder="O-"
             />
           </div>
-          <div className="flex items-start mb-5">
-            <div className="flex items-center h-5">
-              <input
-                id="remember"
-                type="checkbox"
-                value=""
-                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                required
-              />
-            </div>
+
+          <div className="mb-5">
             <label
-              htmlFor="remember"
-              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              htmlFor="allergies"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Remember me
+              Known Allergies?
             </label>
+            <input
+              type="text"
+              id="allergies"
+              name="allergies"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
           </div>
+
+          <div className="mb-5">
+            <label
+              htmlFor="conditions"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Known Conditions?
+            </label>
+            <input
+              type="text"
+              id="conditions"
+              name="conditions"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+          </div>
+
           <button
             type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-violet-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
-            Submit
+            Onboard as patient!
+          </button>
+        </form>
+      )}
+
+      {selectedOption == 'practitioner' && (
+        <form
+          className="max-w mx-auto"
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            void handlePractitionerSubmit(e).catch((error) => {
+              console.error('Error during form submission:', error);
+            });
+          }}
+        >
+          <div className="mb-5">
+            <label
+              htmlFor="title"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Title *
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="M.D."
+              required
+            />
+          </div>
+
+          <div className="mb-5">
+            <label
+              htmlFor="specialty"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Specialty *
+            </label>
+            <input
+              type="text"
+              id="specialty"
+              name="specialty"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Internal"
+              required
+            />
+          </div>
+
+          <div className="mb-5">
+            <label
+              htmlFor="npi"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              NPI (National Provider Identifier) *
+            </label>
+            <input
+              type="number"
+              id="npi"
+              name="npi"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="1234567890"
+              required
+              min={1000000000}
+              max={9999999999}
+              step={1}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="text-white bg-violet-400 hover:bg-violet-500 focus:ring-4 focus:outline-none focus:ring-violet-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+          >
+            Onboard as practitioner!
           </button>
         </form>
       )}
