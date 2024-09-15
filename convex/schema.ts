@@ -15,21 +15,20 @@ export default defineSchema(
       patient: v.id('patient'),
       body: v.id('message'),
       resolved: v.boolean(),
-      title: v.string(),
-      
+      title: v.string()
     }),
 
     message: defineTable({
       author: v.string(),
       images: v.array(v.string()),
       text: v.string(),
-      replies:v.array(v.id('message'))
+      replies: v.array(v.id('message'))
     }),
 
     patient: defineTable({
-      allergies: v.array(v.string()),
+      allergies: v.optional(v.string()),
       blood_type: v.optional(v.string()),
-      conditions: v.array(v.string()),
+      conditions: v.optional(v.string()),
       consults: v.array(v.id('consult')),
       sex: v.optional(v.string())
     }),
