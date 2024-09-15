@@ -22,7 +22,7 @@ export default function App() {
   };
   
   const { user } = useUser();
-  const onboarded = user?.publicMetadata.onboarded;
+  const onboarded = user?.unsafeMetadata.onboarded;
 
   return (
     <main className="">
