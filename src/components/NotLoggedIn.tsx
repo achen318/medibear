@@ -1,12 +1,9 @@
-import { Button } from '@/components/ui/button';
-import { SignInButton } from '@clerk/clerk-react';
+import { SignIn } from '@clerk/clerk-react';
 
-export default function SignIn() {
+export default function NotLoggedIn() {
   return (
     <div className="flex justify-center">
-      <SignInButton mode="modal">
-        <Button>Sign in</Button>
-      </SignInButton>
+      <SignIn />
     </div>
   );
 }

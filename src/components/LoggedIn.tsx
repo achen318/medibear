@@ -1,8 +1,12 @@
-import { useMutation, useQuery } from 'convex/react';
-import { useState } from 'react';
-import Post from "./post";
-import CreatePost from './createPost';
 import './CreatePost.css'; // Add your custom styles here
+
+import { useMutation, useQuery } from 'convex/react';
+
+import CreatePost from './createPost';
+import Post from './post';
+import { UserButton } from '@clerk/clerk-react';
+import { UserProfile } from '@clerk/clerk-react';
+import { useState } from 'react';
 
 export default function LoggedIn() {
   // const messages = useQuery(api.myFunctions.getMessages);
@@ -12,8 +16,24 @@ export default function LoggedIn() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [posts, setPosts] = useState([
-    { subject: 'Stomach Pain', patient: 'Eric Lin', date: '01/01/2022', message: 'Right side of my stomach hurts and my feces have been all sorts of color.', resolved: false, id: '1' },
-    { subject: 'Dizziness When I Get Up', patient: 'Intia Ibnah', date: '02/02/2022', message: 'My vision gets blurry every time I stand up or sit down. It takes a few seconds to adjust, but I always feel sick.', resolved: false, id: '2' },
+    {
+      subject: 'Stomach Pain',
+      patient: 'Eric Lin',
+      date: '01/01/2022',
+      message:
+        'Right side of my stomach hurts and my feces have been all sorts of color.',
+      resolved: false,
+      id: '1'
+    },
+    {
+      subject: 'Dizziness When I Get Up',
+      patient: 'Intia Ibnah',
+      date: '02/02/2022',
+      message:
+        'My vision gets blurry every time I stand up or sit down. It takes a few seconds to adjust, but I always feel sick.',
+      resolved: false,
+      id: '2'
+    }
   ]);
 
   // Function to add a new post
@@ -35,10 +55,15 @@ export default function LoggedIn() {
       <header className="bg-gray-800 text-white">
         <nav className="container mx-auto py-4 flex justify-between items-center">
           <div className="flex space-x-4">
-            <a href="/services" className="hover:text-gray-400">All Posts</a>
+            <a href="/" className="hover:text-gray-400">
+              Home
+            </a>
           </div>
 
-          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 justify-center max-w-lg mx-auto">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="hidden md:flex flex-1 justify-center max-w-lg mx-auto"
+          >
             <input
               type="text"
               value={searchQuery}
@@ -55,7 +80,7 @@ export default function LoggedIn() {
           </form>
 
           <div className="flex space-x-4">
-            <a href="/services" className="hover:text-gray-400">Profile</a>
+            <UserButton />
           </div>
         </nav>
       </header>
@@ -77,7 +102,6 @@ export default function LoggedIn() {
               id={postItem.id}
             />
           ))}
-          
         </div>
       </div>
     </>

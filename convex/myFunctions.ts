@@ -30,16 +30,16 @@ export const createMessage = mutation({
 
 export const deleteMessage = mutation({
   args: {
-    messageId: v.id('message'),
+    messageId: v.id('message')
   },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.messageId);
-  },
+  }
 });
 
 export const createConsult = mutation({
   args: {
-    patient: v.id("patient"),
+    patient: v.id('patient'),
     body: v.id('message'),
     resolved: v.boolean(),
     title: v.string()
@@ -47,7 +47,7 @@ export const createConsult = mutation({
   handler: async (ctx, args) => {
     const newConsult = {
       patient: args.patient,
-      body: args.body, 
+      body: args.body,
       resolved: args.resolved,
       title: args.title
     };
@@ -56,7 +56,7 @@ export const createConsult = mutation({
 
     return newConsult;
   }
-})
+});
 
 export const reply = mutation({
   args: {
@@ -64,10 +64,9 @@ export const reply = mutation({
     replyId: v.id('message')
   },
   handler: async (ctx, args) => {
-
     const originalMessage = await ctx.db.get(args.OPId);
-    
-    if (!originalMessage){
+
+    if (!originalMessage) {
       throw new Error('Message not found');
     }
     const updatedReplies = [...(originalMessage.replies || []), args.replyId];
@@ -78,30 +77,43 @@ export const reply = mutation({
 
     return updatedReplies;
   }
-})
+});
 
 export const createPatient = mutation({
   args: {
-    allergies: v.array(v.string()),
-    blood_type: v.optional(v.string()),
-    conditions: v.array(v.string()),
+    allergies: v.string(),
+    blood_type: v.string(),
+    conditions: v.string(),
     consults: v.array(v.id('consult')),
-    sex: v.optional(v.string())
-  }, 
+    sex: v.string()
+  },
   handler: async (ctx, args) => {
-    const newPatient = {
+    await ctx.db.insert('patient', {
       allergies: args.allergies,
       blood_type: args.blood_type,
       conditions: args.conditions,
       consults: args.consults,
       sex: args.sex
-    }
-
-    await ctx.db.insert('patient', newPatient);
-
-    return newPatient;
+    });
   }
-})
+});
+
+export const createPractitioner = mutation({
+  args: {
+    title: v.string(),
+    specialty: v.string(),
+    npi: v.number(),
+    consults: v.array(v.id('consult'))
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert('practitioner', {
+      title: args.title,
+      specialty: args.specialty,
+      npi: args.npi,
+      consults: args.consults
+    });
+  }
+});
 
 // myFunctions.ts
 
@@ -125,4 +137,20 @@ export const getMessageById = query({
 
 
 
+export const createUser = mutation({
+  args: {
+    title: v.string(),
+    specialty: v.string(),
+    npi: v.number(),
+    consults: v.array(v.id('consult'))
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert('practitioner', {
+      title: args.title,
+      specialty: args.specialty,
+      npi: args.npi,
+      consults: args.consults
+    });
+  }
+});
 
