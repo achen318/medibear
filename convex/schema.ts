@@ -10,24 +10,30 @@ export default defineSchema(
       username: v.string(),
       password: v.string()
     }),
+
     consult: defineTable({
       patient: v.id('patient'),
-      message: v.array(v.id('message')),
+      body: v.id('message'),
       resolved: v.boolean(),
-      title: v.string()
+      title: v.string(),
+      
     }),
+
     message: defineTable({
       author: v.string(),
       images: v.array(v.string()),
-      text: v.string()
+      text: v.string(),
+      replies:v.array(v.id('message'))
     }),
+
     patient: defineTable({
-      allergies: v.optional(v.array(v.string())),
+      allergies: v.array(v.string()),
       blood_type: v.optional(v.string()),
-      conditions: v.optional(v.array(v.string())),
+      conditions: v.array(v.string()),
       consults: v.array(v.id('consult')),
       sex: v.optional(v.string())
     }),
+
     doctor: defineTable({
       title: v.string(),
       specialty: v.optional(v.string()),

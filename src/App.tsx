@@ -7,6 +7,7 @@ import {useState} from "react";
 import Post from "./components/post";
 import Consult from "./components/Consult";
 
+
 export default function App() {
   // Define the state for the checkbox (checked or not)
   const [isChecked, setIsChecked] = useState(false);
@@ -16,14 +17,22 @@ export default function App() {
     setIsChecked(event.target.checked); // Update the state with the checkbox value (true or false)
   };
   
+  const { user } = useUser();
+  const onboarded = user?.publicMetadata.onboarded;
+
   return (
+    <main className="container max-w-2xl flex flex-col gap-8">
+      <h1 className="text-4xl font-extrabold my-8 text-center">
+        Please No Lawsuits
+      </h1>
     <main className=""> {/*container max-w-2xl flex flex-col gap-8 */} 
       {/* <h1 className="text-4xl font-extrabold my-8 text-center">
       </h1> */}
       <Authenticated>
-        <SignedIn />
-        <h1>Yay!!!</h1>
+        <UserButton />
+        {onboarded ? <LoggedIn /> : <Onboarding />}
       </Authenticated>
+
       <Unauthenticated>
         <SignedIn /> 
         {/* make sure to remove this line */}
