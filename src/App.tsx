@@ -7,7 +7,7 @@ import Onboarding from '@/components/Onboarding';
 
 export default function App() {
   const { user } = useUser();
-  const onboarded = user?.publicMetadata.onboarded;
+  const onboarded = user?.unsafeMetadata.onboarded;
 
   return (
     <main className="container max-w-2xl flex flex-col gap-8">

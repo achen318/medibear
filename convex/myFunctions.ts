@@ -114,3 +114,22 @@ export const createPractitioner = mutation({
     });
   }
 });
+
+
+export const createUser = mutation({
+  args: {
+    title: v.string(),
+    specialty: v.string(),
+    npi: v.number(),
+    consults: v.array(v.id('consult'))
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert('practitioner', {
+      title: args.title,
+      specialty: args.specialty,
+      npi: args.npi,
+      consults: args.consults
+    });
+  }
+});
+

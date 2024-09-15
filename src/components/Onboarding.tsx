@@ -25,8 +25,8 @@ export default function Onboarding() {
       conditions,
       consults: []
     })
-      .then(() => {
-        user!.publicMetadata.onboarded = true;
+      .then(async () => {
+        await user?.update({ unsafeMetadata: { onboarded: true } });
       })
       .catch((error) => {
         console.error('Failed to update user:', error);

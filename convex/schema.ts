@@ -8,7 +8,8 @@ export default defineSchema(
       name: v.string(),
       email: v.string(),
       username: v.string(),
-      password: v.string()
+      password: v.string(),
+      onboarded: v.boolean()
     }),
 
     consult: defineTable({
