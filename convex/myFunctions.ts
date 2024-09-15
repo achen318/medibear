@@ -103,5 +103,26 @@ export const createPatient = mutation({
   }
 })
 
+// myFunctions.ts
+
+export const getConsultById = query({
+  args: {
+    id: v.id('consult'),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query('consult').filter(q => q.eq(q.field('_id'), args.id)).first();
+  }
+});
+
+export const getMessageById = query({
+  args: {
+    id: v.id('message'),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query('message').filter(q => q.eq(q.field('_id'), args.id)).first();
+  }
+});
+
+
 
 
