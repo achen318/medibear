@@ -2,7 +2,6 @@ import {Authenticated, Unauthenticated, useMutation, useQuery} from 'convex/reac
 import { SignInButton, UserButton } from '@clerk/clerk-react';
 import './App.css';
 import { Button } from '@/components/ui/button';
-import { api } from '../convex/_generated/api';
 import {useState} from "react";
 import Post from "./components/post";
 import Consult from "./components/Consult";
