@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import './CreatePost.css'; // Add your custom styles here
-import { useMutation } from 'convex/react'; // Import Convex hooks
 
 const CreatePost = ({ addPost }) => {
   const [post, setPost] = useState({ subject: '', author: '', message: '' });
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const createMessage = useMutation('createMessage'); // Mutation to create a new message
 
   // Handle input change
   const handleChange = (e) => {
@@ -15,29 +12,19 @@ const CreatePost = ({ addPost }) => {
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Prepare the new message object
-    const newMessage = {
-      author: post.author,
-      images: [], // Add logic to handle images if necessary
-      text: post.message,
-      replies: [], // Empty replies for now
-    };
-
-    // Call the mutation to save the message to the database
-    const savedMessage = await createMessage(newMessage);
-
-    // Add the new message to the front-end state
-    addPost({
+    const newPost = {
       subject: post.subject,
       patient: post.author,
       date: new Date().toLocaleDateString(),
       message: post.message,
       resolved: false,
-      id: savedMessage._id, // Use the ID from the database
-    });
+      id: Math.random().toString(36).substr(2, 9),
+    };
+
+    addPost(newPost); // Pass the new post to the parent (LoggedIn)
 
     // Clear the form and close the modal
     setPost({ subject: '', author: '', message: '' });
