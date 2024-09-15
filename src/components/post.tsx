@@ -22,12 +22,18 @@ const Post: React.FC<PostProps> = ({subject, patient, date, resolved, message}) 
     };
 
     return (
-        <div className = "Consult bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300" onClick = {handleClick}>
-            <h1> Subject: {subject} </h1>
-            <p> Patient: {patient} </p>
-            <p> Date: {date} </p>
-            {/* <p> Message: {new Message("Hernia Big Bad", "Image Stub", "Eric Lin", "11:11")} </p> */}
-            <p> Resolved: {resolved} </p>
+        <div className="post bg-violet-400 hover:bg-violet-500 active:bg-violet-600 focus:outline-none focus:ring focus:ring-violet-300 p-4 rounded-lg shadow-lg cursor-pointer" onClick={handleClick}>
+            {/* Main Focus: Subject */}
+            <h1 className="text-2xl font-bold text-white mb-2">Subject: {subject}</h1>
+            
+            {/* Secondary Information */}
+            <div className="text-white space-y-1">
+                <p className="text-sm font-medium">Patient: {patient}</p>
+                <p className="text-sm font-medium">Date: {date}</p>
+                <p className={`text-sm ${resolved ? 'text-green-400' : 'text-red-400'} font-medium`}>
+                Resolved: {resolved ? 'Yes' : 'No'}
+                </p>
+            </div>
         </div>
     );
 };

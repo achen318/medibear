@@ -1,4 +1,4 @@
-.Consult {
+.post {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -9,12 +9,11 @@
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    background-color: #e3c6ff;
     /* width: 100%; */
     color: black;
     width: 50%;
     margin-left: auto;
     margin-right: auto;
     /* max-width: 600px; */
-    
 }
